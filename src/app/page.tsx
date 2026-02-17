@@ -12,9 +12,14 @@ export default function Home() {
           <Image src="/logo.jpg" alt="Qiroai Logo" width={40} height={40} className={styles.logoImage} />
           <span>Qiroai</span>
         </div>
-        <Link href="/canvas" className={styles.navCta}>
-          Launch App
-        </Link>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <Link href="/login" className={styles.navCta} style={{ background: 'transparent', border: '1px solid #e0e0e0', color: '#333' }}>
+            Log In
+          </Link>
+          <Link href="/signup" className={styles.navCta}>
+            Sign Up
+          </Link>
+        </div>
       </nav>
 
       {/* Hero Section */}
@@ -35,7 +40,7 @@ export default function Home() {
           AI Agents connecting the dots for you in real-time.
         </p>
 
-        <Link href="/canvas" className={styles.mainCta}>
+        <Link href="/signup" className={styles.mainCta}>
           Start Collaborating Free <ArrowRight size={20} />
         </Link>
 

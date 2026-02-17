@@ -7,6 +7,7 @@ import { HeatmapLayer } from './HeatmapLayer';
 import { HandOffPortal, AgentType } from './HandOffPortal';
 import PrivacyControl from '../layout/PrivacyControl';
 import CommandPalette from '../ui/CommandPalette';
+import UserMenu from '../layout/UserMenu';
 import { Plus, Search, MessageSquare, Briefcase, Play, Info } from 'lucide-react';
 import styles from './Canvas.module.css';
 
@@ -480,6 +481,7 @@ export default function Canvas() {
                 </button>
             </div>
 
+            <UserMenu />
             <PrivacyControl />
             <CommandPalette />
         </div>
