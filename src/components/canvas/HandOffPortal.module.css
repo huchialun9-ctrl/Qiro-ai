@@ -1,0 +1,70 @@
+.portalContainer {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+    z-index: 100;
+    pointer-events: none;
+    /* Let clicks pass through, but children will re-enable */
+}
+
+.portal {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(20, 20, 30, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--node-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    overflow: visible;
+}
+
+.portal:hover {
+    transform: scale(1.1) translateX(-5px);
+    background: rgba(50, 50, 70, 0.8);
+    color: white;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+.portal.active {
+    transform: scale(1.2) translateX(-10px);
+    background: var(--accent-primary);
+    color: white;
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+}
+
+.portalLabel {
+    position: absolute;
+    right: 70px;
+    /* Left of the portal */
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.portal:hover .portalLabel {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.portalIcon {
+    width: 24px;
+    height: 24px;
+}

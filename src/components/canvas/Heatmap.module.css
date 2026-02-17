@@ -1,0 +1,130 @@
+.heatmapLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hotspot {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 100, 0, 0.15) 0%, rgba(255, 100, 0, 0) 70%);
+    filter: blur(20px);
+    animation: pulse-hotspot 4s infinite ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hotspotLabel {
+    font-size: 0.8rem;
+    color: rgba(255, 200, 150, 0.8);
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-align: center;
+    pointer-events: auto;
+    /* allow hovering label if needed */
+}
+
+.hotspot:hover .hotspotLabel {
+    opacity: 1;
+}
+
+@keyframes pulse-hotspot {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+}
+
+.suggestionToast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 30, 0.95);
+    border: 1px solid var(--accent-primary);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1000;
+    min-width: 300px;
+    animation: slide-up 0.3s ease-out;
+}
+
+.suggestionAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.suggestionContent {
+    flex: 1;
+}
+
+.suggestionTitle {
+    font-weight: bold;
+    color: var(--accent-primary);
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.suggestionText {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.suggestionActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.actionButton {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.actionButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translate(-50%, 20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}

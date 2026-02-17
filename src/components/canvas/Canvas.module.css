@@ -1,0 +1,120 @@
+/* Node Component Styles */
+.node {
+    /* ... existing styles ... */
+    position: absolute;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    min-width: 150px;
+    max-width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: grab;
+    user-select: none;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.node:active {
+    cursor: grabbing;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.agentNode {
+    border-color: #4262ff;
+    border-width: 2px;
+}
+
+.nodeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.nodeContent {
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+/* Transparency Features */
+.nodeFooter {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+}
+
+.confidenceBadge {
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.65rem;
+}
+
+.confidenceHigh {
+    background-color: #2ecc71;
+}
+
+/* Green */
+.confidenceMed {
+    background-color: #f1c40f;
+    color: #333;
+}
+
+/* Yellow */
+.confidenceLow {
+    background-color: #e74c3c;
+}
+
+/* Red */
+
+.modelLabel {
+    color: #999;
+    font-family: monospace;
+}
+
+.infoIcon {
+    cursor: help;
+    color: #aaa;
+    margin-left: 4px;
+}
+
+.infoIcon:hover {
+    color: #4262ff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    width: 200px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    margin-bottom: 8px;
+}
+
+.infoContainer:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
