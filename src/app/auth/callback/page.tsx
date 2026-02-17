@@ -23,7 +23,7 @@ function CallbackContent() {
 
             if (error) {
                 setStatus(`Error: ${error_description || error}`);
-                setTimeout(() => router.push('/login'), 3000);
+                // Removed auto-redirect
                 return;
             }
 
@@ -41,7 +41,7 @@ function CallbackContent() {
                 } catch (err: any) {
                     console.error('Auth Callback Error:', err);
                     setStatus(`Sign in failed: ${err.message}`);
-                    setTimeout(() => router.push('/login'), 3000);
+                    // Removed auto-redirect to let user see error
                 }
             } else {
                 // Check if session exists (Implicit or already handled)
