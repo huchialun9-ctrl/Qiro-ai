@@ -40,7 +40,11 @@ export default function SignUpPage() {
             }
         } catch (err: any) {
             console.error("Signup Error:", err);
-            setError(err.message || "An unexpected error occurred during signup.");
+            if (err.message && err.message.includes("already registered") || err.status === 422) {
+                setError("This email is already registered. Please Log In instead.");
+            } else {
+                setError(err.message || "An unexpected error occurred.");
+            }
         } finally {
             setLoading(false);
         }
