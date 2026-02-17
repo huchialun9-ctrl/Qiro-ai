@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { FileText, Search, Code } from 'lucide-react';
+import { Github, Layout, Code } from 'lucide-react';
 import styles from './HandOffPortal.module.css';
 
-export type AgentType = 'post-it' | 'research' | 'coder';
+export type AgentType = 'github' | 'figma' | 'coder';
 
 interface HandOffPortalProps {
     onDrop: (agentType: AgentType) => void;
@@ -10,17 +10,15 @@ interface HandOffPortalProps {
 }
 
 export const HandOffPortal: React.FC<HandOffPortalProps> = ({ onDrop, isDraggingNode }) => {
+    const activeClass = (type: AgentType) => activePortal === type ? styles.active : '';
+
     const [activePortal, setActivePortal] = useState<AgentType | null>(null);
 
     const handleMouseEnter = (type: AgentType) => {
-        if (isDraggingNode) {
-            setActivePortal(type);
-        }
+        if (isDraggingNode) setActivePortal(type);
     };
 
-    const handleMouseLeave = () => {
-        setActivePortal(null);
-    };
+    const handleMouseLeave = () => setActivePortal(null);
 
     const handleMouseUp = (type: AgentType) => {
         if (isDraggingNode) {
@@ -32,27 +30,27 @@ export const HandOffPortal: React.FC<HandOffPortalProps> = ({ onDrop, isDragging
     return (
         <div className={styles.portalContainer}>
             <div
-                className={`${styles.portal} ${activePortal === 'post-it' ? styles.active : ''}`}
-                onMouseEnter={() => handleMouseEnter('post-it')}
+                className={`${styles.portal} ${activeClass('github')}`}
+                onMouseEnter={() => handleMouseEnter('github')}
                 onMouseLeave={handleMouseLeave}
-                onMouseUp={() => handleMouseUp('post-it')}
+                onMouseUp={() => handleMouseUp('github')}
             >
-                <FileText className={styles.portalIcon} />
-                <div className={styles.portalLabel}>Post-it Agent</div>
+                <Github className={styles.portalIcon} />
+                <div className={styles.portalLabel}>GitHub Issue</div>
             </div>
 
             <div
-                className={`${styles.portal} ${activePortal === 'research' ? styles.active : ''}`}
-                onMouseEnter={() => handleMouseEnter('research')}
+                className={`${styles.portal} ${activeClass('figma')}`}
+                onMouseEnter={() => handleMouseEnter('figma')}
                 onMouseLeave={handleMouseLeave}
-                onMouseUp={() => handleMouseUp('research')}
+                onMouseUp={() => handleMouseUp('figma')}
             >
-                <Search className={styles.portalIcon} />
-                <div className={styles.portalLabel}>Research Agent</div>
+                <Layout className={styles.portalIcon} />
+                <div className={styles.portalLabel}>Figma Spec</div>
             </div>
 
             <div
-                className={`${styles.portal} ${activePortal === 'coder' ? styles.active : ''}`}
+                className={`${styles.portal} ${activeClass('coder')}`}
                 onMouseEnter={() => handleMouseEnter('coder')}
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={() => handleMouseUp('coder')}

@@ -58,16 +58,61 @@ export default function CommandPalette() {
                 action: () => {
                     if (confirm("Clear everything?")) useCanvasStore.setState({ nodes: [], connections: [] });
                 }
+            },
+            // Slash Commands
+            {
+                id: 'cmd-generate',
+                label: '/generate <idea> : Create a new node with AI content',
+                icon: <Zap size={18} color="#FFD700" />,
+                shortcut: '/gen',
+                action: (args?: string) => {
+                    // Simple implementation: Create a node with the prompt
+                    // In the future, this could trigger an agent immediately
+                    addNode({
+                        id: crypto.randomUUID(),
+                        content: args || 'AI Generated Idea',
+                        x: 0,
+                        y: 0,
+                        type: 'default', // Could be 'executor' to auto-run
+                        confidence: 90,
+                        model: 'o1-mini (Simulated)',
+                        reasoning: 'Generated via Command Palette'
+                    });
+                }
+            },
+            {
+                id: 'cmd-analyze',
+                label: '/analyze : Analyze the current canvas state',
+                icon: <Search size={18} color="#A020F0" />,
+                shortcut: '/ana',
+                action: () => {
+                    alert("Analysis started... (Feature coming in Agent Debate)");
+                }
             }
         ];
 
-        const filtered = actions.filter(action =>
-            action.label.toLowerCase().includes(query.toLowerCase())
-        );
+        let filtered = [];
+        if (query.startsWith('/')) {
+            const cmd = query.slice(1).split(' ')[0].toLowerCase();
+            const args = query.split(' ').slice(1).join(' ');
+
+            filtered = actions.filter(a => a.label.startsWith('/') && a.label.includes(cmd));
+
+            // Attach args to the action so it can be used on Enter
+            filtered = filtered.map(a => ({
+                ...a,
+                runArgs: args
+            }));
+
+        } else {
+            filtered = actions.filter(action =>
+                !action.label.startsWith('/') && action.label.toLowerCase().includes(query.toLowerCase())
+            );
+        }
+
         setFilteredActions(filtered);
 
     }, [query, addNode, temporal]);
-
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -88,7 +133,9 @@ export default function CommandPalette() {
                 } else if (e.key === 'Enter') {
                     e.preventDefault();
                     if (filteredActions[selectedIndex]) {
-                        filteredActions[selectedIndex].action();
+                        // Pass arguments if any
+                        const actionItem = filteredActions[selectedIndex];
+                        actionItem.action(actionItem.runArgs);
                         setIsOpen(false);
                     }
                 }

@@ -7,8 +7,10 @@ import { HeatmapLayer } from './HeatmapLayer';
 import { HandOffPortal, AgentType } from './HandOffPortal';
 import PrivacyControl from '../layout/PrivacyControl';
 import CommandPalette from '../ui/CommandPalette';
+import VoiceInput from './VoiceInput';
 import UserMenu from '../layout/UserMenu';
-import { Plus, Search, MessageSquare, Briefcase, Play, Info } from 'lucide-react';
+import { Plus, Search, MessageSquare, Briefcase, Play, Info, Sparkles } from 'lucide-react';
+import { performClustering, applyClusterLayout } from '@/utilities/clustering';
 import styles from './Canvas.module.css';
 
 interface NodeProps {
@@ -23,9 +25,10 @@ interface NodeProps {
     onMouseDown: (e: React.MouseEvent, id: string) => void;
     onMouseUp: (e: React.MouseEvent, id: string) => void;
     onActivate?: (id: string, type: string) => void;
+    onDebate?: (id: string) => void;
 }
 
-const NodeComponent = ({ id, content, x, y, type, confidence, reasoning, model, onMouseDown, onMouseUp, onActivate }: NodeProps) => {
+const NodeComponent = ({ id, content, x, y, type, confidence, reasoning, model, onMouseDown, onMouseUp, onActivate, onDebate }: NodeProps) => {
     const isAgent = type === 'explorer' || type === 'critic' || type === 'executor';
 
     // Determine confidence color
@@ -51,6 +54,16 @@ const NodeComponent = ({ id, content, x, y, type, confidence, reasoning, model, 
                         title="Run Agent"
                     >
                         <Play size={12} />
+                    </button>
+                )}
+                {!isAgent && onDebate && (
+                    <button
+                        onClick={(e) => { e.stopPropagation(); onDebate(id); }}
+                        className="ml-2 hover:text-white"
+                        title="Start Debate"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666' }}
+                    >
+                        <MessageSquare size={12} />
                     </button>
                 )}
             </div>
@@ -152,12 +165,12 @@ export default function Canvas() {
 
         let prompt = '';
         let prefix = '';
-        if (agentType === 'post-it') {
-            prompt = `Generate 5 engaging social media posts based on: "${node.content}".`;
-            prefix = 'Post-it Agent';
-        } else if (agentType === 'research') {
-            prompt = `Identify 3 key patents or research papers related to: "${node.content}".`;
-            prefix = 'Research Agent';
+        if (agentType === 'github') {
+            prompt = `Generate a GitHub Issue (Title + Markdown Body) for this feature: "${node.content}".`;
+            prefix = 'GitHub Issue';
+        } else if (agentType === 'figma') {
+            prompt = `Describe the UI/UX specs and CSS properties for this element in a format suitable for Figma handoff: "${node.content}".`;
+            prefix = 'Figma Spec';
         } else if (agentType === 'coder') {
             prompt = `Generate a React component for: "${node.content}".`;
             prefix = 'Coder Agent';
@@ -368,6 +381,80 @@ export default function Canvas() {
         });
     };
 
+    const handleDebate = async (nodeId: string) => {
+        const node = nodes.find(n => n.id === nodeId);
+        if (!node) return;
+
+        // 1. Critic attacks
+        const criticRes: any = await AgentService.invokeAgent('critic', [node], "Analyze the flaws in this idea.");
+        const criticContent = typeof criticRes === 'string' ? criticRes : (criticRes?.content || 'No critique');
+        const criticId = crypto.randomUUID();
+
+        addNode({
+            id: criticId,
+            content: `[Critic]\n${criticContent}`,
+            x: node.x - 200,
+            y: node.y + 200,
+            type: 'critic',
+            confidence: criticRes?.confidence,
+            model: criticRes?.model,
+            reasoning: criticRes?.reasoning
+        });
+        addConnection({ id: crypto.randomUUID(), sourceId: nodeId, targetId: criticId, label: 'Attacks' });
+
+        // 2. Explorer defends (Considers original + critique)
+        const explorerRes: any = await AgentService.invokeAgent('explorer', [node, { type: 'critic', content: criticContent }], "Defend this idea against the critique and expand it.");
+        const explorerContent = typeof explorerRes === 'string' ? explorerRes : (explorerRes?.content || 'No defense');
+        const explorerId = crypto.randomUUID();
+
+        addNode({
+            id: explorerId,
+            content: `[Explorer]\n${explorerContent}`,
+            x: node.x + 200,
+            y: node.y + 200,
+            type: 'explorer',
+            confidence: explorerRes?.confidence,
+            model: explorerRes?.model,
+            reasoning: explorerRes?.reasoning
+        });
+        addConnection({ id: crypto.randomUUID(), sourceId: nodeId, targetId: explorerId, label: 'Defends' });
+        addConnection({ id: crypto.randomUUID(), sourceId: criticId, targetId: explorerId, label: 'Counters' });
+
+        // 3. Consensus (Synthesis)
+        const consensusRes: any = await AgentService.invokeAgent('executor', [node, { type: 'critic', content: criticContent }, { type: 'explorer', content: explorerContent }], "Synthesize a consensus solution.");
+        const consensusContent = typeof consensusRes === 'string' ? consensusRes : (consensusRes?.content || 'No consensus');
+        const consensusId = crypto.randomUUID();
+
+        addNode({
+            id: consensusId,
+            content: `[Consensus]\n${consensusContent}`,
+            x: node.x,
+            y: node.y + 400,
+            type: 'default',
+            confidence: consensusRes?.confidence,
+            model: consensusRes?.model,
+            reasoning: "Synthesized from Debate"
+        });
+        addConnection({ id: crypto.randomUUID(), sourceId: explorerId, targetId: consensusId, label: 'Synthesis' });
+        addConnection({ id: crypto.randomUUID(), sourceId: criticId, targetId: consensusId, label: 'Synthesis' });
+    };
+
+    const handleCluster = () => {
+        // Simple clustering demo
+        // Convert to compatible format if needed
+        const clusters = performClustering(nodes as any); // Type cast for MVP
+
+        // Layout
+        // Since we don't have a sophisticated force-directed graph here yet, we'll just snap them
+        // In a real app we'd animate this
+        const newNodes = applyClusterLayout(nodes as any, clusters as any);
+
+        // Update all nodes
+        // This is a bit brute force for Zustand but works for demo
+        useCanvasStore.setState({ nodes: newNodes });
+        alert(`Re-Qi: Organized ${nodes.length} nodes into ${clusters.length} clusters.`);
+    };
+
     return (
         <div
             ref={containerRef}
@@ -443,6 +530,7 @@ export default function Canvas() {
                         onMouseDown={handleNodeMouseDown}
                         onMouseUp={handleNodeMouseUp}
                         onActivate={handleActivateAgent}
+                        onDebate={handleDebate}
                     />
                 ))}
             </div>
@@ -479,11 +567,16 @@ export default function Canvas() {
                     <Briefcase size={20} />
                     Executor
                 </button>
+                <button className={styles.toolbarButton} onClick={handleCluster} style={{ borderLeft: '1px solid #333', paddingLeft: '12px', marginLeft: '8px' }}>
+                    <Sparkles size={20} color="#FFD700" />
+                    Re-Qi
+                </button>
             </div>
 
             <UserMenu />
             <PrivacyControl />
             <CommandPalette />
+            <VoiceInput />
         </div>
     );
 }
