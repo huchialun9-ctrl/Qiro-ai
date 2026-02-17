@@ -1,62 +1,62 @@
 .portalContainer {
-    position: absolute;
+    position: fixed;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 2rem 1rem;
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    padding: 0;
     z-index: 100;
-    pointer-events: none;
-    /* Let clicks pass through, but children will re-enable */
 }
 
 .portal {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(20, 20, 30, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--node-border);
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-secondary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.1s ease;
     cursor: pointer;
-    pointer-events: auto;
     position: relative;
-    overflow: visible;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.portal:last-child {
+    border-bottom: none;
 }
 
 .portal:hover {
-    transform: scale(1.1) translateX(-5px);
-    background: rgba(50, 50, 70, 0.8);
-    color: white;
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .portal.active {
-    transform: scale(1.2) translateX(-10px);
-    background: var(--accent-primary);
-    color: white;
-    box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-left: 2px solid var(--text-primary);
 }
 
 .portalLabel {
     position: absolute;
-    right: 70px;
-    /* Left of the portal */
-    background: rgba(0, 0, 0, 0.8);
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    right: 60px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
     font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
     opacity: 0;
     transform: translateX(10px);
-    transition: all 0.2s;
+    transition: all 0.1s;
     white-space: nowrap;
+    pointer-events: none;
 }
 
 .portal:hover .portalLabel {
@@ -65,6 +65,11 @@
 }
 
 .portalIcon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+.portal:hover .portalIcon {
+    opacity: 1;
 }

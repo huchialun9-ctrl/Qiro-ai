@@ -2,12 +2,12 @@
 .canvasContainer {
     width: 100vw;
     height: 100vh;
-    background-color: #0a0a0a;
-    /* Dark background */
+    background-color: var(--bg-primary);
     overflow: hidden;
     position: relative;
     cursor: grab;
     user-select: none;
+    color: var(--text-primary);
 }
 
 .canvasContainer:active {
@@ -31,10 +31,10 @@
     left: -50000px;
     width: 100000px;
     height: 100000px;
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    /* Dot Grid Pattern */
+    background-image: radial-gradient(var(--border-subtle) 1px, transparent 1px);
     background-size: 20px 20px;
+    opacity: 0.2;
     pointer-events: none;
 }
 
@@ -66,17 +66,16 @@
 /* Toolbar */
 .toolbar {
     position: fixed;
-    bottom: 30px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 10px 20px;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    gap: 8px;
+    background: var(--bg-panel);
+    padding: 6px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-md);
     z-index: 1000;
 }
 
@@ -86,18 +85,20 @@
     gap: 8px;
     background: transparent;
     border: none;
-    color: white;
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.1s ease;
+    font-family: var(--font-sans);
 }
 
 .toolbarButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transform: translateY(-1px);
 }
 
 .toolbarButton:active {
@@ -107,47 +108,55 @@
 /* Node Component Styles */
 .node {
     position: absolute;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    background: var(--bg-node);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
     padding: 12px;
-    min-width: 150px;
-    max-width: 300px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    max-width: 320px;
+    box-shadow: none;
+    /* Flat design */
     cursor: grab;
     user-select: none;
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition: border-color 0.15s, transform 0.1s;
     z-index: 10;
+    backdrop-filter: blur(8px);
+}
+
+.node:hover {
+    border-color: var(--border-focus);
 }
 
 .node:active {
     cursor: grabbing;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-primary);
     z-index: 20;
 }
 
 .agentNode {
-    border-color: #4262ff;
-    border-width: 2px;
+    border-color: var(--accent-secondary);
+    border-width: 1px;
 }
 
 .nodeHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.75rem;
-    color: #666;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
     margin-bottom: 8px;
     text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    font-family: var(--font-mono);
 }
 
 .nodeContent {
-    font-size: 0.9rem;
-    color: #333;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.6;
     white-space: pre-wrap;
+    font-family: var(--font-sans);
 }
 
 /* Transparency Features */

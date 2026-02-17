@@ -35,8 +35,8 @@ export const HandOffPortal: React.FC<HandOffPortalProps> = ({ onDrop, isDragging
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={() => handleMouseUp('github')}
             >
-                <Github className={styles.portalIcon} />
                 <div className={styles.portalLabel}>GitHub Issue</div>
+                <Github className={styles.portalIcon} strokeWidth={1.5} />
             </div>
 
             <div
@@ -45,8 +45,8 @@ export const HandOffPortal: React.FC<HandOffPortalProps> = ({ onDrop, isDragging
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={() => handleMouseUp('figma')}
             >
-                <Layout className={styles.portalIcon} />
                 <div className={styles.portalLabel}>Figma Spec</div>
+                <Layout className={styles.portalIcon} strokeWidth={1.5} />
             </div>
 
             <div
@@ -55,8 +55,8 @@ export const HandOffPortal: React.FC<HandOffPortalProps> = ({ onDrop, isDragging
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={() => handleMouseUp('coder')}
             >
-                <Code className={styles.portalIcon} />
                 <div className={styles.portalLabel}>Coder Agent</div>
+                <Code className={styles.portalIcon} strokeWidth={1.5} />
             </div>
         </div>
     );

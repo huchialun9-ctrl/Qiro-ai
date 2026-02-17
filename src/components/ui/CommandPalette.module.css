@@ -4,30 +4,32 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 20vh;
+    padding-top: 15vh;
     z-index: 2000;
 }
 
 .container {
     width: 600px;
     max-width: 90vw;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-sans);
     display: flex;
     flex-direction: column;
+    color: var(--text-primary);
 }
 
 .inputWrapper {
     padding: 16px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -35,14 +37,17 @@
 
 .input {
     flex: 1;
+    background: transparent;
     border: none;
-    font-size: 1.1rem;
+    font-size: 1rem;
     outline: none;
-    color: #333;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
 }
 
 .input::placeholder {
-    color: #999;
+    color: var(--text-secondary);
+    opacity: 0.5;
 }
 
 .list {
@@ -52,19 +57,21 @@
 }
 
 .item {
-    padding: 12px 16px;
+    padding: 10px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: background 0.1s;
-    color: #333;
+    transition: all 0.1s ease;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 .item:hover,
 .itemSelected {
-    background: #f5f7fa;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .itemIcon {
@@ -74,9 +81,11 @@
 }
 
 .shortcut {
-    font-size: 0.75rem;
-    color: #999;
-    background: #f0f0f0;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
     padding: 2px 6px;
     border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+    font-family: var(--font-mono);
 }

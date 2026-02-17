@@ -23,19 +23,24 @@ export default function SignUpPage() {
         setError(null);
 
         try {
-            const { error } = await supabase.auth.signUp({
+            const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
             });
 
             if (error) throw error;
-            // Check if email confirmation is required (Supabase default usually requires it)
-            // But for simple DX we might auto-login or show message
-            // Assuming default flow:
-            alert("Check your email for the confirmation link!");
-            router.push('/login');
+
+            if (data.session) {
+                // Email confirmation disabled, auto-logged in
+                router.push('/canvas');
+            } else {
+                // Email confirmation required
+                alert("Check your email for the confirmation link!");
+                router.push('/login');
+            }
         } catch (err: any) {
-            setError(err.message);
+            console.error("Signup Error:", err);
+            setError(err.message || "An unexpected error occurred during signup.");
         } finally {
             setLoading(false);
         }

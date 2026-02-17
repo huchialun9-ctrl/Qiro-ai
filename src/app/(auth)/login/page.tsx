@@ -26,6 +26,7 @@ export default function LoginPage() {
             if (error) throw error;
             router.push('/canvas');
         } catch (err: any) {
+            console.error("Login Error:", err);
             setError(err.message);
         } finally {
             setLoading(false);
