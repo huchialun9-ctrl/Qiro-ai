@@ -165,6 +165,42 @@ export default function AuthLayout({
             .terms-checkbox input {
                 margin-top: 3px;
             }
+            .auth-separator {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                color: #888;
+                margin: 20px 0;
+                font-size: 0.85rem;
+            }
+            .auth-separator::before, .auth-separator::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            .auth-separator::before { margin-right: 10px; }
+            .auth-separator::after { margin-left: 10px; }
+            
+            .github-button {
+                background: #24292e;
+                color: white;
+                padding: 14px;
+                border-radius: 12px;
+                font-weight: 600;
+                font-size: 1rem;
+                border: none;
+                cursor: pointer;
+                transition: transform 0.1s, opacity 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+            }
+            .github-button:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+            }
         `}</style>
         </div>
     );

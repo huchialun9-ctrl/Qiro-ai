@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
+import { useAuthStore } from '@/utilities/auth';
+import { Github } from 'lucide-react';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -69,6 +71,16 @@ export default function LoginPage() {
                     {loading ? 'Signing in...' : 'Sign In'}
                 </button>
             </form>
+
+            <div className="auth-separator">OR</div>
+
+            <button
+                onClick={() => useAuthStore.getState().signInWithGithub()}
+                className="github-button"
+            >
+                <Github size={20} />
+                Continue with GitHub
+            </button>
 
             <div className="auth-footer">
                 Don't have an account?

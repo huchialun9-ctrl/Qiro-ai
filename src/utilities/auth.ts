@@ -10,6 +10,7 @@ interface AuthState {
     setSession: (session: Session | null) => void;
     setLoading: (loading: boolean) => void;
     signOut: () => Promise<void>;
+    signInWithGithub: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -22,6 +23,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     signOut: async () => {
         await supabase.auth.signOut();
         set({ user: null, session: null });
+    },
+    signInWithGithub: async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'github',
+            options: {
+                redirectTo: `${window.location.origin}/auth/callback`,
+            },
+        });
+        if (error) throw error;
     },
 }));
 
