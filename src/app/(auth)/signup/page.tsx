@@ -104,7 +104,13 @@ export default function SignUpPage() {
             <div className="auth-separator">OR</div>
 
             <button
-                onClick={() => useAuthStore.getState().signInWithGithub()}
+                onClick={async () => {
+                    try {
+                        await useAuthStore.getState().signInWithGithub();
+                    } catch (err: any) {
+                        setError(err.message);
+                    }
+                }}
                 className="github-button"
             >
                 <Github size={20} />
