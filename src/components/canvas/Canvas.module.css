@@ -1,6 +1,111 @@
+/* Canvas Layout */
+.canvasContainer {
+    width: 100vw;
+    height: 100vh;
+    background-color: #0a0a0a;
+    /* Dark background */
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    user-select: none;
+}
+
+.canvasContainer:active {
+    cursor: grabbing;
+}
+
+.canvasLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 0 0;
+    will-change: transform;
+}
+
+/* Grid Background */
+.gridBackground {
+    position: absolute;
+    top: -50000px;
+    left: -50000px;
+    width: 100000px;
+    height: 100000px;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+}
+
+/* Connections */
+.connectionLine {
+    stroke: #4262ff;
+    stroke-width: 2px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Ripples */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(66, 98, 255, 0.3);
+    transform: scale(0);
+    animation: rippleEffect 1.5s linear;
+    pointer-events: none;
+}
+
+@keyframes rippleEffect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Toolbar */
+.toolbar {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.toolbarButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toolbarButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.toolbarButton:active {
+    transform: translateY(0);
+}
+
 /* Node Component Styles */
 .node {
-    /* ... existing styles ... */
     position: absolute;
     background: white;
     border: 1px solid #e0e0e0;
@@ -12,11 +117,13 @@
     cursor: grab;
     user-select: none;
     transition: box-shadow 0.2s, transform 0.2s;
+    z-index: 10;
 }
 
 .node:active {
     cursor: grabbing;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    z-index: 20;
 }
 
 .agentNode {
@@ -88,6 +195,13 @@
     cursor: help;
     color: #aaa;
     margin-left: 4px;
+}
+
+.infoContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .infoIcon:hover {
